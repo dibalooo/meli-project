@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from "react";
 import PrimeryInput from "../../../components/primary-input"
 export default function SendOtp({ setStep, setOtpId }: { setStep: any, setOtpId: any }) {
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState("3oulless");
     const [errorUsername, seterrorUsername] = useState(false)
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState("Admin@5847!@#$");
     const [errorPassword, setErrorpassword] = useState(false)
     const [captchaId, setCaptchaId] = useState("");
-    const [captchaCode, setCaptchaCode] = useState("");
+    const [captchaCode, setCaptchaCode] = useState("118303");
     const [captchaImage, setCapchaImage] = useState("");
 
 

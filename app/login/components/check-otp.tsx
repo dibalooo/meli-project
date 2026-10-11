@@ -4,7 +4,7 @@ import { useState } from "react"
 
 
 export default function CheckOtp({ otpId, setStep, setOtpId ,goToPanel}: { otpId: any, setStep: any, setOtpId: any,goToPanel:any }) {
-    const [code, setCode] = useState("")
+    const [code, setCode] = useState("118303")
 
     function changeHandle(event: React.ChangeEvent<HTMLInputElement>) {
         if (event.target.name === "code") {
