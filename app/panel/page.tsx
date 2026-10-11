@@ -10,6 +10,9 @@ export default function App() {
                 <div className="flex gap-5 pt-5">
                     <Sidebar />
                     <Main />
+                    
+
+
                 </div>
             </div>
 

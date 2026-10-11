@@ -1,6 +1,7 @@
 "use client"
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import Filters from "@/components/panel/filters"
+import Pagination from "@/components/panel/pagination"
 type OrderListRequest = {
     fromDate: string | null;
     toDate: string | null;
@@ -56,12 +57,17 @@ type Order = {
 
 
 
+
 export default function OrderList() {
     const [fromDate, setFromDate] = useState<OrderListRequest["fromDate"]>(null)
     const [toDate, setToDate] = useState<OrderListRequest["toDate"]>(null)
     const [status, setStatus] = useState<OrderListRequest["status"]>(null)
     const [productId, setProductId] = useState<OrderListRequest["productId"]>(null)
     const [list, setList] = useState<Order[]>([])
+    const [pageNumber,setPageNumber] = useState(1)
+    const [totalPages , setTotalPages] = useState(0)
+    const [totalCount ,setTotalCount] = useState(0)
+
 
 
 
@@ -98,7 +104,7 @@ export default function OrderList() {
                 "Authorization": `Bearer ${token}`
 
             },
-            body: JSON.stringify({ fromDate, toDate, status, productId ,pageNumber:1,pageSize:10})
+            body: JSON.stringify({ fromDate, toDate, status, productId ,pageNumber,pageSize:10})
         })
         const response = await httpRequest
         if (response.ok) {
@@ -107,6 +113,7 @@ export default function OrderList() {
                 const data = bodyResponse.data
 
                 setList(data.items)
+                setTotalPages(data?.totalPages || 0)
 
             }
         }
@@ -119,7 +126,7 @@ export default function OrderList() {
     useEffect(() => {
         getList()
 
-    }, [])
+    },[pageNumber])
 
 
 
@@ -129,7 +136,7 @@ export default function OrderList() {
 
 
         <div >
-            <Filters statusModel={statusModel} setStatus={setStatus} setProductId={setProductId} getList={getList} setFromDate={setFromDate} setToDate={setToDate}/>
+            <Filters statusModel={statusModel} setStatus={setStatus} setProductId={setProductId} getList={getList} setFromDate={setFromDate} setToDate={setToDate} pageNumber={pageNumber} setPageNumber={setPageNumber} />
 
 
 
@@ -248,6 +255,7 @@ export default function OrderList() {
 
 
                             </tr>
+                            
 
                         )
                     })}
@@ -256,6 +264,7 @@ export default function OrderList() {
                 </tbody>
 
             </table>
+            <Pagination setPageNumber={setPageNumber} totalPages={totalPages} pageNumber={pageNumber} />
 
         </div>
 
