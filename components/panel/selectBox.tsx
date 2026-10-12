@@ -1,6 +1,6 @@
 "use client"
 
-type Option = { name: string; value: string };
+export type Option = { name: string; value: string };
 
 export default function SelectBox({ lable, options, name, placeholder, onChange }: { lable: string, options: Option[], name: string, placeholder: string, onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void }) {
     return (

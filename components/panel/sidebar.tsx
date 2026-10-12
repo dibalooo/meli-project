@@ -1,6 +1,21 @@
 "use client"
+import Link from "next/link"
 export default function Sidebar() {
-     
+    async function getProfile() {
+        const req = fetch("http://37.32.24.124:443/api/v1/customer/profile/get", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+        })
+        const res = await req
+        if (res.ok) {
+            const bodyRes = await res.json()
+
+        }
+
+    }
 
     return (
         <div className="flex flex-col justify-between bg-[#211e72] h-[calc(100vh-250px)] w-80 rounded-2xl overflow-hidden">
@@ -15,14 +30,14 @@ export default function Sidebar() {
                     </button>
                     <div><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24"><path fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 6l-6 6l6 6" /></svg></div>
                 </div>
-                <button className="flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md">
+                <Link className="flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md" href={"/panel/orders"}>
                     <span><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                         <path fillRule="evenodd" clipRule="evenodd" d="M12 3.66333L20.25 7.7398V17.01L12 21.0865L3.75 17.01V7.7398L12 3.66333ZM5.25 9.41292V16.078L11.25 19.0427V12.3776L5.25 9.41292ZM12.75 12.3776V19.0427L18.75 16.078V9.41292L16.5 10.5247V13.4999L15 14.2499V11.2659L12.75 12.3776ZM17.807 8.20577L15.8527 9.17139C15.8099 9.13606 15.7624 9.10498 15.7106 9.07908L10.1015 6.27454L12 5.33645L17.807 8.20577ZM8.41452 7.1081L14.1871 9.9944L12 11.0751L6.19304 8.20577L8.41452 7.1081Z" fill="#fff" />
                     </svg></span>
                     <span className="text-white">سفارشات</span>
 
-                </button>
-                <button className="flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md">
+                </Link>
+                <Link className="flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md" href={"/panel/add-order"}>
                     <span><svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="0 -0.5 33 21" version="1.1">
 
 
@@ -36,9 +51,9 @@ export default function Sidebar() {
                             </g>
                         </g>
                     </svg></span>
-                    <span className="text-white">سفارش جدید</span>
+                    <span className="text-white">سفارش جدید</span></Link>
 
-                </button>
+
 
             </div>
 
@@ -46,7 +61,7 @@ export default function Sidebar() {
 
 
 
-            
+
 
         </div>
 

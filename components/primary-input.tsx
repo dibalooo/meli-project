@@ -1,4 +1,4 @@
-export default function PrimeryInput({value ,placeholder , onChange , className , lable, type="text"} : {value : string , placeholder : string , onChange : (e:React.ChangeEvent<HTMLInputElement>) => void , className : string , lable:string ,type:React.HTMLInputTypeAttribute}) {
+export default function PrimeryInput({value ,placeholder , onChange , className , lable, type="text"} : {value : string|number , placeholder : string , onChange : (e:React.ChangeEvent<HTMLInputElement>) => void , className? : string , lable:string ,type:React.HTMLInputTypeAttribute}) {
     
     return (
 

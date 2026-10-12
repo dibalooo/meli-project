@@ -2,6 +2,7 @@
 import { use, useEffect, useState } from "react"
 import Filters from "@/components/panel/filters"
 import Pagination from "@/components/panel/pagination"
+import addOrder from "./addOrder"
 type OrderListRequest = {
     fromDate: string | null;
     toDate: string | null;
@@ -66,7 +67,6 @@ export default function OrderList() {
     const [list, setList] = useState<Order[]>([])
     const [pageNumber,setPageNumber] = useState(1)
     const [totalPages , setTotalPages] = useState(0)
-    const [totalCount ,setTotalCount] = useState(0)
 
 
 
@@ -135,7 +135,7 @@ export default function OrderList() {
     return (
 
 
-        <div >
+        <div className="w-full" >
             <Filters statusModel={statusModel} setStatus={setStatus} setProductId={setProductId} getList={getList} setFromDate={setFromDate} setToDate={setToDate} pageNumber={pageNumber} setPageNumber={setPageNumber} />
 
 
