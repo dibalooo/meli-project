@@ -2,7 +2,7 @@
 import { use, useEffect, useState } from "react"
 import Filters from "@/components/panel/filters"
 import Pagination from "@/components/panel/pagination"
-import addOrder from "./addOrder"
+import addOrder from "./add-order/addOrder"
 type OrderListRequest = {
     fromDate: string | null;
     toDate: string | null;

@@ -1,7 +1,7 @@
 "use client"
 import Filters from "./filters"
 import OrderList from "@/components/panel/ordersList"
-import AddOrder from "@/components/panel/addOrder"
+import AddOrder from "@/components/panel/add-order/addOrder"
 export default function Main() {
     return (
         <div className=" bg-blue-100 w-full rounded-2xl ">
