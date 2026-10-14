@@ -24,7 +24,7 @@ export default function App() {
     return (
         <div className=" h-screen flex justify-center items-center  ">
             <div className="  rounded-lg  w-100  justify-center shadow-xl/30 shadow-[#211e72] p-8">
-                {step === "sendOtp" && <SendOtp setStep={setStep} setOtpId={setOtpId} />}
+                {step === "sendOtp" && <SendOtp setStep={setStep} setOtpId={setOtpId} goToPanel={goToPanel}/>}
                 {step === "checkOtp" && <CheckOtp setStep={setStep} otpId={otpId} setOtpId={setOtpId} goToPanel={goToPanel}/>}
                
 

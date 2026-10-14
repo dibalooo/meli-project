@@ -16,11 +16,33 @@ type AddOrder = {
 
 
 export default function AddOrder() {
-    const { productId, setProductId, count, setCount, rate, setRate, step, setStep } = useAddOrderStore((state) => state)
+    const { productId, setProductId, count, setCount, rate, setRate, step, setStep, isChecked } = useAddOrderStore((state) => state)
     const [products, setProducts] = useState<Option[]>([])
     const router = useRouter()
 
-    
+
+    async function createOrder(){
+        const req = fetch("http://37.32.24.124:443/api/v1/customer/orders/create" ,{
+            method:"POST",
+            headers:{
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+
+            },
+            body:JSON.stringify({productId,count,rate})
+        })
+        const res = await req
+        console.log(res)
+        if(res.ok){
+            const bodyRes = await res.json()
+            if(bodyRes.success){
+
+            }
+        }
+    }
+   
+
+
 
 
 
@@ -34,30 +56,52 @@ export default function AddOrder() {
                 <div className="shadow-md  p-5 rounded-2xl w-150 flex flex-col">
                     <div className="border-b mb-5 pb-3">ثبت سفارش</div>
                     <div className="flex items-center gap-3">
-                        <span className="bg-blue-950 text-white px-2 text-center rounded">1</span>
+                        <span className={` text-white p-1  flex items-center justify-center rounded ${step === "getInfo" ? "bg-blue-950 w-8 h-8" : "bg-blue-100 w-6 h-6"}`}>{step === "getInfo" ? 1 : <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 16 16" version="1.1" fill="none" stroke="#fefeff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5">
+                            <path d="m1.75 9.75 2.5 2.5m3.5-4 2.5-2.5m-4.5 4 2.5 2.5 6-6.5" />
+                        </svg>}
+                        </span>
                         <div>اطلاعات سفارش</div>
                     </div>
                     {step === "getInfo" && <GetInfo />}
                     <div className="flex items-center gap-3 py-5">
-                        <span className="bg-blue-100 text-white px-2 text-center rounded">2</span>
+                        <span className={`text-white flex justify-center items-center px-1 text-center rounded ${step === "acceptRules" ? "bg-blue-950 w-8 h-8" : "bg-blue-100 w-6 h-6"}`}>2</span>
                         <div>پذیرش شیوه نامه</div>
                     </div>
                     {step === "acceptRules" && <ShowRules />}
+
                     <div className="flex gap-3 justify-end text-white pt-5">
-                        <div onClick={() => router.push("/panel/orders")} className="flex border rounded-lg items-center justify-center gap-2 w-30 h-10 bg-blue-950 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="#ffffff" height="20px" width="20px" version="1.1" id="Capa_1" viewBox="0 0 206.108 206.108" xmlSpace="preserve">
+                        <button onClick={() => { if (step === "getInfo") { router.push("/panel/orders") } else { setStep("getInfo") } }} className="flex border rounded-lg items-center justify-center gap-2 w-30 h-10 bg-blue-950 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="#ffffff" height="15px" width="15px" version="1.1" id="Capa_1" viewBox="0 0 206.108 206.108" xmlSpace="preserve">
                                 <path d="M152.774,69.886H30.728l24.97-24.97c3.515-3.515,3.515-9.213,0-12.728c-3.516-3.516-9.213-3.515-12.729,0L2.636,72.523  c-3.515,3.515-3.515,9.213,0,12.728l40.333,40.333c1.758,1.758,4.061,2.636,6.364,2.636c2.303,0,4.606-0.879,6.364-2.636  c3.515-3.515,3.515-9.213,0-12.728l-24.97-24.97h122.046c19.483,0,35.334,15.851,35.334,35.334s-15.851,35.334-35.334,35.334H78.531  c-4.971,0-9,4.029-9,9s4.029,9,9,9h74.242c29.408,0,53.334-23.926,53.334-53.334S182.182,69.886,152.774,69.886z" />
                             </svg>
-                            بازگشت
-                        </div>
-                        <div onClick={() => setStep("acceptRules")} className="flex border rounded-lg items-center justify-center gap-2 w-30 h-10 bg-blue-950 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24"><path fill="none" stroke="#ffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 6l-6 6l6 6"></path></svg>
-                            مرحله بعد
-                        </div>
+                            {step === "getInfo" ? "بازگشت" : "مرحله قبل"}
+
+
+
+                        </button>
+                        <button disabled={step === "acceptRules" && !isChecked} onClick={() => {
+                            if (step !== "acceptRules") {
+                                setStep("acceptRules")
+                            } else if (isChecked) {
+
+                            }
+                        }}
+                            className={`flex border rounded-lg items-center justify-center gap-2 w-30 h-10 bg-blue-950 ${step === "acceptRules" && !isChecked
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : step === "acceptRules"
+                                        ? "bg-blue-950 cursor-pointer"
+                                        : "bg-blue-100 cursor-pointer"
+                                }`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"><path fill="none" stroke="#ffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 6l-6 6l6 6"></path></svg>
+                            {step === "acceptRules" ? "ثبت سفارش" : "مرحله بعد"}
+                        </button>
+                        {step === "acceptRules" && <button onClick={() => router.push("/panel/orders")} className="flex border rounded-lg items-center justify-center gap-2 w-30 h-10 bg-blue-950 cursor-pointer">انصراف</button>}
+
 
 
 
                     </div>
+
                 </div>
 
 

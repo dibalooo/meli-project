@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import PrimeryInput from "../../../components/primary-input"
-export default function SendOtp({ setStep, setOtpId }: { setStep: any, setOtpId: any }) {
+export default function SendOtp({ setStep, setOtpId , goToPanel}: { setStep: any, setOtpId: any , goToPanel:any}) {
     const [username, setUsername] = useState("3oulless");
     const [errorUsername, seterrorUsername] = useState(false)
     const [password, setPassword] = useState("Admin@5847!@#$");
@@ -44,6 +44,7 @@ export default function SendOtp({ setStep, setOtpId }: { setStep: any, setOtpId:
 
 
 
+
     async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
         const request = fetch("http://37.32.24.124:443/api/v1/customer/auth/login", {
@@ -57,12 +58,21 @@ export default function SendOtp({ setStep, setOtpId }: { setStep: any, setOtpId:
         const response = await request
         if (response.ok) {
             const jsonResponse = await response.json()
+            const data = jsonResponse.data
             const otpId = jsonResponse.data.otpId
 
 
             if (jsonResponse.success && jsonResponse.data.otpRequired) {
                 setStep("checkOtp")
                 setOtpId(otpId)
+            }
+            else if (jsonResponse.success && !jsonResponse.data.otpRequired) {
+                localStorage.setItem("loginInfo", JSON.stringify(data))
+                const token = data.token
+                localStorage.setItem("token", token)
+                goToPanel()
+
+
             }
         }
     }

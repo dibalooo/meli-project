@@ -1,14 +1,15 @@
 "use client"
 import { useAddOrderStore } from "@/store/addOrderStore"
 import { useEffect, useState } from "react"
+import Checkbox from "@/components/primary-checkbox"
 
 export default function ShowRules() {
-    const { count, rate, products, setProducts ,productId} = useAddOrderStore((state) => state)
+    const { count, rate, products, setProducts, productId , isChecked , setIsChecked } = useAddOrderStore((state) => state)
     const [idNo, setIdNo] = useState("")
     const [persianName, setPersianName] = useState("")
     const selectedProduct = products.find(
-    (item) => item.value === productId
-);
+        (item) => item.value === productId
+    );
 
     async function getProfileInfo() {
         const req = fetch("http://37.32.24.124:443/api/v1/customer/profile/get", {
@@ -32,11 +33,12 @@ export default function ShowRules() {
     }
     useEffect(() => {
         getProfileInfo()
-    },[])
+    }, [])
+    
     return (
         <div>
 
-            <div className="pr-5 py-3 w-full border-bs">
+            <div className="pr-5 py-3 w-full">
                 <div>بسمه تعالی</div>
                 <div>
                     <div>مدیریت محترم شرکت صرافی ملی ایران</div>
@@ -60,6 +62,8 @@ export default function ShowRules() {
                     بدیهی است انجام معامله و تسویه آن منوط به توافق نهایی طرفین و در چهارچوب مجموعه مقررات ارزی می باشد.
 
                 </div>
+                <Checkbox label="تمام قوانین را میپذیرم." checked={isChecked} onChange={(value)=>setIsChecked(value)}/>
+
             </div>
 
 

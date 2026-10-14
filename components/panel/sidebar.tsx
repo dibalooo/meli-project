@@ -1,6 +1,8 @@
 "use client"
 import Link from "next/link"
+import { useAddOrderStore } from "@/store/addOrderStore"
 export default function Sidebar() {
+
 
     async function getProfile() {
         const req = fetch("http://37.32.24.124:443/api/v1/customer/profile/get", {
@@ -38,7 +40,7 @@ export default function Sidebar() {
                     <span className="text-white">سفارشات</span>
 
                 </Link>
-                <Link className="flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md" href={"/panel/add-order"} >
+                <Link className="flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md" href={"/panel/add-order"}  >
                     <span><svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="0 -0.5 33 21" version="1.1">
 
 
