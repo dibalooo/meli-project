@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Checkbox from "@/components/primary-checkbox"
 
 export default function ShowRules() {
-    const { count, rate, products, setProducts, productId , isChecked , setIsChecked } = useAddOrderStore((state) => state)
+    const { count, rate, products, productId, isChecked, setIsChecked} = useAddOrderStore((state) => state)
     const [idNo, setIdNo] = useState("")
     const [persianName, setPersianName] = useState("")
     const selectedProduct = products.find(
@@ -33,8 +33,18 @@ export default function ShowRules() {
     }
     useEffect(() => {
         getProfileInfo()
+
+
     }, [])
+
+
+    useEffect(()=>{
+        return ()=>(
+            setIsChecked(false)
+        )
+    },[])
     
+
     return (
         <div>
 
@@ -62,7 +72,7 @@ export default function ShowRules() {
                     بدیهی است انجام معامله و تسویه آن منوط به توافق نهایی طرفین و در چهارچوب مجموعه مقررات ارزی می باشد.
 
                 </div>
-                <Checkbox label="تمام قوانین را میپذیرم." checked={isChecked} onChange={(value)=>setIsChecked(value)}/>
+                <Checkbox label="تمام قوانین را میپذیرم." checked={isChecked} onChange={(value) => setIsChecked(value)} />
 
             </div>
 
