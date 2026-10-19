@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Checkbox from "@/components/primary-checkbox"
 
 export default function ShowRules() {
-    const { count, rate, products, productId, isChecked, setIsChecked} = useAddOrderStore((state) => state)
+    const { count, rate, products, productId, isChecked, setIsChecked } = useAddOrderStore((state) => state)
     const [idNo, setIdNo] = useState("")
     const [persianName, setPersianName] = useState("")
     const selectedProduct = products.find(
@@ -38,12 +38,12 @@ export default function ShowRules() {
     }, [])
 
 
-    useEffect(()=>{
-        return ()=>(
+    useEffect(() => {
+        return () => (
             setIsChecked(false)
         )
-    },[])
-    
+    }, [])
+
 
     return (
         <div>
