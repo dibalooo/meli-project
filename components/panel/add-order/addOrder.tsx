@@ -28,7 +28,7 @@ export default function AddOrder() {
     const [products, setProducts] = useState<Option[]>([])
     const router = useRouter()
     const [errors, setErrors] = useState<Errors>({})
-    const [isLoading , setIsLoading] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const handleValidation = () => {
         const result = addOrderSchema.safeParse({
@@ -63,15 +63,19 @@ export default function AddOrder() {
             body: JSON.stringify({ productId, count, rate })
         })
         const res = await req
-        if (res.ok) {
-            const bodyRes = await res.json()
-            if (bodyRes.success) {
-                router.push("/panel/orders")
+        const bodyRes = await res.json()
+
+        if (res.ok && bodyRes.success) {
+            router.push("/panel/orders")
+            
 
 
-            }
 
 
+        }if(res.status === 401 || bodyRes.statusCode === 440){
+            router.push("/login")
+            localStorage.removeItem("token")
+            localStorage.removeItem("loginInfo")
         }
         setIsLoading(false)
     }
@@ -134,8 +138,8 @@ export default function AddOrder() {
                             }
                         }}
                             className={`flex border rounded-lg items-center justify-center gap-2 w-30 h-10 bg-blue-950 ${(step === "getInfo" && !isFormValid) || (step === "acceptRules" && !isChecked) ?
-                                 "bg-gray-300 cursor-not-allowed"
-                                    : "bg-blue-950 cursor-pointer"}`}>
+                                "bg-gray-300 cursor-not-allowed"
+                                : "bg-blue-950 cursor-pointer"}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"><path fill="none" stroke="#ffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 6l-6 6l6 6"></path></svg>
                             {step === "acceptRules" ? "ثبت سفارش" : "مرحله بعد"}
                         </button>

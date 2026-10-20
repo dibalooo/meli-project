@@ -3,13 +3,14 @@ import { useEffect, useState } from "react"
 import DatePickerComponent from "./DatePicker"
 import SelectBox from "./selectBox";
 import PrimaryBtn from "../primary-btn";
+import { useRouter } from "next/navigation";
 
 type StatusModel = Record<string, string>;
 
 export default function Filters({ statusModel, setStatus, setProductId, getList, setFromDate, setToDate, pageNumber, setPageNumber }: { statusModel: StatusModel, setStatus: any, setProductId: any, getList: () => void, setFromDate: (date: string | null) => void, setToDate: (date: string | null) => void, pageNumber: number, setPageNumber: (number: number) => void }) {
     const statusList = Object.keys(statusModel).map(key => ({ value: key, name: statusModel[key] }))
     const [products, setProducts] = useState([])
-
+    const router = useRouter()
     async function requestProductList() {
         const fetching = fetch("http://37.32.24.124:443/api/v1/customer/products/list", {
             method: "POST",
@@ -19,17 +20,21 @@ export default function Filters({ statusModel, setStatus, setProductId, getList,
             }
         })
         const response = await fetching
-
-        if (response.ok) {
-            const bodyResponse = await response.json()
+        const bodyResponse = await response.json()
 
 
-            if (bodyResponse.success) {
-                const products = bodyResponse.data.items.map((item: any) => ({ name: item?.name, value: item?.id }));
-                setProducts(products)
-            }
+        if (response.ok && bodyResponse.success) {
 
 
+            const products = bodyResponse.data.items.map((item: any) => ({ name: item?.name, value: item?.id }));
+            setProducts(products)
+
+
+        }
+        if(response.status === 401 || bodyResponse.statusCode === 440){
+            router.push("/login")
+            localStorage.removeItem("token")
+            localStorage.removeItem("loginInfo")
         }
     }
     useEffect(() => {

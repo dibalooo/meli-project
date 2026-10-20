@@ -4,7 +4,7 @@ import OrderList from "@/components/panel/ordersList"
 import AddOrder from "@/components/panel/add-order/addOrder"
 export default function Main() {
     return (
-        <div className=" bg-blue-100 w-full rounded-2xl ">
+        <div className="  w-full  ">
 
             <div>
                 <OrderList/>

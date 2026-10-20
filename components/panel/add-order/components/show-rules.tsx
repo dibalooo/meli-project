@@ -2,6 +2,7 @@
 import { useAddOrderStore } from "@/store/addOrderStore"
 import { useEffect, useState } from "react"
 import Checkbox from "@/components/primary-checkbox"
+import { useRouter } from "next/navigation"
 
 export default function ShowRules() {
     const { count, rate, products, productId, isChecked, setIsChecked } = useAddOrderStore((state) => state)
@@ -10,6 +11,7 @@ export default function ShowRules() {
     const selectedProduct = products.find(
         (item) => item.value === productId
     );
+    const router = useRouter()
 
     async function getProfileInfo() {
         const req = fetch("http://37.32.24.124:443/api/v1/customer/profile/get", {
@@ -21,13 +23,18 @@ export default function ShowRules() {
 
         })
         const res = await req
-        if (res.ok) {
-            const bodyReq = await res.json()
-            if (bodyReq.success) {
-                setIdNo(bodyReq.data.user.idNo)
-                setPersianName(bodyReq.data.exchange.persianName)
+        const bodyReq = await res.json()
 
-            }
+        if (res.ok && bodyReq.success) {
+            setIdNo(bodyReq.data.user.idNo)
+            setPersianName(bodyReq.data.exchange.persianName)
+
+        } if (res.status === 401 || bodyReq.statusCode === 440) {
+            router.push("/login")
+            localStorage.removeItem("token")
+            localStorage.removeItem("loginInfo")
+
+
         }
 
     }
