@@ -111,6 +111,14 @@ const statusModel: Record<string, string> = {
   CANCELLED: "لغو شده",
 };
 
+const rejectReason: Record<string, string> = {
+  REQUESTED_COUNT:
+    "تعداد درخواست‌شده بیشتر از میزان قابل تخصیص توسط صرافی است.",
+  REQUESTED_RATE: "نرخ درخواست‌شده کمتر از نرخ اعلام‌شده توسط صرافی است.",
+  REQUESTED_CURRENCY:
+    "نوع ارز درخواست‌شده با ارز ارائه‌شده توسط صرافی مغایرت دارد.",
+};
+
 export default function Details({ id }: { id: string }) {
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [orders, setOrders] = useState<OrdersType | null>(null);
@@ -120,7 +128,7 @@ export default function Details({ id }: { id: string }) {
   };
   const [firstImage, setFirstImage] = useState("");
   const [seconedImage, setSecondImage] = useState("");
-
+  const [description, setDescription] = useState("");
   async function getProfile() {
     const req = fetch("http://37.32.24.124:443/api/v1/customer/profile/get", {
       method: "POST",
@@ -135,10 +143,18 @@ export default function Details({ id }: { id: string }) {
     if (res.ok && bodyRes.success) {
       setProfile(bodyRes?.data);
     }
-    if (res.status === 401 || bodyRes.statusCode === 440) {
+    if (res.status === 401) {
       router.push("/login");
       localStorage.removeItem("token");
       localStorage.removeItem("loginInfo");
+    }
+    if (res.status === 440) {
+      const message = bodyRes?.message;
+      if (confirm(message) == true) {
+        router.push("/login");
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginInfo");
+      }
     }
   }
 
@@ -158,12 +174,21 @@ export default function Details({ id }: { id: string }) {
       setOrders(bodyRes?.data);
       setFirstImage(bodyRes?.data?.purchaseReceiptBase64);
       setSecondImage(bodyRes?.data?.letterIntroductionBase64);
-      console.log(firstImage);
+      setDescription(bodyRes?.data?.description);
     }
-    if (res.status === 401 || bodyRes.statusCode === 440) {
+    if (res.status === 401) {
       router.push("/login");
       localStorage.removeItem("token");
       localStorage.removeItem("loginInfo");
+    }
+    if (res.status === 440) {
+      const message = bodyRes?.message;
+      // confirm(message);
+      if (confirm(message) == true) {
+        router.push("/login");
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginInfo");
+      }
     }
   }
 
@@ -262,7 +287,13 @@ export default function Details({ id }: { id: string }) {
         </div>
         <div className=" border-b border-gray-300 py-5  w-full">
           <div>توضیحات</div>
-          <div></div>
+          <div>
+            {orders?.status === "REJECTED"
+              ? description
+                  .split("|")
+                  .map((item) => <div>{rejectReason[item]}</div>)
+              : "-"}
+          </div>
         </div>
         <br />
         <div>
