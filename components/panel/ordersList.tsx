@@ -228,6 +228,10 @@ export default function OrderList() {
                 <td>
                   <div className="flex flex-col items-center gap-2 ">
                     <svg
+                    onClick={() => 
+                        router.push(`/panel/transaction/${item.id}`)}
+                      
+                    
                       className="cursor-pointer"
                       xmlns="http://www.w3.org/2000/svg"
                       width="20px"

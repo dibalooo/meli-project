@@ -65,8 +65,8 @@ export default function ShowRules() {
           احتراماً، وفق بخشنامه 76578 مورخ 07/04/1405 بانک مرکزی جمهوری اسلامی
           ایران و نظر به امکان خرید ارز در سرفصل از/به بانک و صرافی دیگر با کد
           عملیاتی 26 برای شرکت های صرافی دارای مجوز معتبر فعالیت، شرکت صرافی{" "}
-          {persianName} به شناسه ملی {idNo} درخواست خرید مقدار {count}{" "}
-          {selectedProduct?.name} در نرخ {rate} ریال را اعلام می دارد. خواهشمند
+          <span className="font-bold">{persianName}</span> به شناسه ملی <span className="font-bold">{idNo}</span> درخواست خرید مقدار <span className="font-bold">{count}</span>{" "}
+          <span className="font-bold">{selectedProduct?.name}</span> در نرخ <span className="font-bold">{rate}</span> ریال را اعلام می دارد. خواهشمند
           است در صورت امکان و با رعایت ضوابط و مقررات ارزی مربوط، مساعدت لازم در
           خصوص تامین ارز مورد درخواست و انجام معامله را مبذول فرمایید.
           <br />

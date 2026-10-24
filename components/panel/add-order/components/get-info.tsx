@@ -53,7 +53,7 @@ export default function GetInfo() {
       }
     }
   }
-  useEffect(() => {
+  useEffect(() => {                       
     getList();
   }, []);
 

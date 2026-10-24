@@ -23,8 +23,8 @@ export default function Header() {
   return (
     <div>
       <div className="flex gap-5 ">
-        <div className="bg-gray-400 flex items-center w-[316px] rounded-2xl p-2 justify-evenly text-white text-2xl font-bold shadow shadow-gray-500">
-          <img src="/primary-logo.png" alt="" className="w-[80px] h-[80px]" />
+        <div className="bg-gray-400 flex items-center w-79 rounded-2xl p-2 justify-evenly text-white text-2xl font-bold shadow shadow-gray-500">
+          <img src="/primary-logo.png" alt="" className="w-20 h-20" />
           <div>صرافی ملی</div>
         </div>
         <div className="bg-gray-100 w-full flex items-center justify-between h-30 rounded-2xl px-5 shadow shadow-gray-500">
