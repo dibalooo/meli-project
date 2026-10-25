@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Info } from "lucide-react";
+import { Check } from "lucide-react";
+import { X } from "lucide-react";
+import { Undo2 } from "lucide-react";
 type OrdersType = {
   id: string;
   exchangeId: string;
@@ -86,15 +89,14 @@ const statusModel: Record<string, string> = {
   CANCELLED: "لغو شده",
   APPROVED: "تایید شده",
 };
-const paymentSourceModel : Record<string,string> = {
+const paymentSourceModel: Record<string, string> = {
   RECEIPT: "رسید",
-  WALLET:"کیف پول"
-}
-const createdByTypeModel : Record<string,string> = {
-  CUSTOMER : "مشتری",
-  ADMIN : "راهبر"
-
-}
+  WALLET: "کیف پول",
+};
+const createdByTypeModel: Record<string, string> = {
+  CUSTOMER: "مشتری",
+  ADMIN: "راهبر",
+};
 
 export default function Transaction({
   id,
@@ -182,7 +184,16 @@ export default function Transaction({
   return (
     <div className="w-full">
       <div>
-        <span className="">تراکنش ها</span>
+        <div className="flex justify-between py-3">
+          <span className="font-bold">تراکنش ها</span>
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-1 cursor-pointer bg-blue-950 text-white rounded px-2 py-1"
+          >
+            <Undo2 size={16} />
+            <span>بازگشت</span>
+          </button>
+        </div>
         <div className="shadow-md p-8 rounded-lg  flex gap-8 justify-between">
           <div className="flex-1">
             <div className="flex justify-between items-center border-b border-gray-300 py-3">
@@ -264,8 +275,6 @@ export default function Transaction({
           </thead>
           <tbody>
             {transactionsList?.items.map((item, index) => {
-              console.log("Status:", item.status);
-              console.log("Persian status:", statusModel[item.status]);
               const persianDate = new Date(item.createdAt).toLocaleDateString(
                 "fa-IR",
               );
@@ -276,29 +285,25 @@ export default function Transaction({
                   minute: "2-digit",
                 },
               );
-              const reviewedAtDate = new Date(
-                item.reviewedAt,
-              ).toLocaleDateString("fa-IR");
-              const reviewedAtTime = new Date(
-                item.reviewedAt,
-              ).toLocaleTimeString("fa-IR", {
-                hour: "2-digit",
-                minute: "2-digit",
-              });
 
               return (
-                <tr
-                  className=""
-                  key={index}
-                >
+                <tr className="" key={index}>
                   <td className="px-6 py-4  ">{index + 1}</td>
                   <td className="px-6 py-4 ">{item?.amount}</td>
                   <td className="px-6 py-4 ">
                     {statusModel[item?.status ?? ""] ?? item?.status}
                   </td>
-                  <td className="px-6 py-4 ">{item?.isDeposit }</td>
-                  <td className="px-6 py-4 ">{paymentSourceModel[item?.paymentSource ?? ""]??item?.paymentSource}</td>
-                  <td className="px-6 py-4 ">{createdByTypeModel[item?.createdByType ?? ""]?? item?.createdByType}</td>
+                  <td className="px-6 py-4 ">
+                    {item?.isDeposit === "Y" ? <Check /> : <X />}
+                  </td>
+                  <td className="px-6 py-4 ">
+                    {paymentSourceModel[item?.paymentSource ?? ""] ??
+                      item?.paymentSource}
+                  </td>
+                  <td className="px-6 py-4 ">
+                    {createdByTypeModel[item?.createdByType ?? ""] ??
+                      item?.createdByType}
+                  </td>
                   <td className="px-6 py-4 ">{item?.bankName}</td>
                   <td className="px-6 py-4 ">{item?.trackingCode}</td>
                   <td>
@@ -306,11 +311,40 @@ export default function Transaction({
                     <div>{persianTime}</div>
                   </td>
                   <td>
-                    <div>{reviewedAtDate}</div>
-                    <div>{reviewedAtTime}</div>
+                    {item.reviewedAt ? (
+                      <>
+                        <div>
+                          {new Date(item.reviewedAt).toLocaleDateString(
+                            "fa-IR",
+                          )}
+                        </div>
+
+                        <div>
+                          {new Date(item.reviewedAt).toLocaleTimeString(
+                            "fa-IR",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            },
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      "-"
+                    )}
                   </td>
 
-                  <td className="px-6 py-4 "><Info size={20} onClick={()=> router.push(`/panel/transaction/${item?.orderId}/${item?.id}`) }/></td>
+                  <td className="px-6 py-4 ">
+                    <Info
+                      className="cursor-pointer"
+                      size={20}
+                      onClick={() =>
+                        router.push(
+                          `/panel/transaction/${item?.orderId}/${item?.id}`,
+                        )
+                      }
+                    />
+                  </td>
                 </tr>
               );
             })}

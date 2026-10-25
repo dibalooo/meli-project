@@ -1,7 +1,10 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import PrimaryImgBox from "../primary-imgbox";
+import { ArrowDownToLine } from "lucide-react";
+import { Undo2 } from "lucide-react";
+
 type transactionsGetType = {
   id: string;
   exchangeId: string;
@@ -44,6 +47,10 @@ const createdByTypeModel: Record<string, string> = {
   CUSTOMER: "مشتری",
   ADMIN: "راهبر",
 };
+const description: Record<string, string> = {
+  REQUESTED_COUNT:
+    "تعداد درخواست‌شده بیشتر از میزان قابل تخصیص توسط صرافی است.",
+};
 export default function TransactionsDetails({
   transactionId,
 }: {
@@ -53,6 +60,7 @@ export default function TransactionsDetails({
     null,
   );
   const router = useRouter();
+  const [img, setImg] = useState("");
 
   async function transactionsGet() {
     const req = fetch(
@@ -70,6 +78,7 @@ export default function TransactionsDetails({
     const bodyRes = await res.json();
     if (res.ok && bodyRes.success) {
       setTransaction(bodyRes?.data);
+      setImg(bodyRes?.data?.receiptBase64);
     }
     if (res.status === 401) {
       router.push("/login");
@@ -91,11 +100,20 @@ export default function TransactionsDetails({
   }, [transactionId]);
 
   return (
-    <div className="w-150">
-      <span>جزئیات تراکنش</span>
-      <div className="shadow-md p-8 rounded-lg  flex gap-8 ">
-        <div>
-          <div className="flex gap-8 ">
+    <div className="w-full flex items-center justify-center">
+      <div className="">
+        <div className="flex justify-between items-center py-1">
+          <span className="font-bold">جزئیات سفارش</span>
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-1 cursor-pointer bg-blue-950 text-white rounded px-2 py-1"
+          >
+            <Undo2 size={16} />
+            <span>بازگشت</span>
+          </button>
+        </div>
+        <div className="shadow-md p-8 rounded">
+          <div className="flex gap-8 w-150 ">
             <div className="flex-1">
               <div className="flex justify-between items-center border-b border-gray-300 py-3">
                 <span>مبلغ</span>
@@ -114,11 +132,19 @@ export default function TransactionsDetails({
               </div>
               <div className="flex justify-between items-center border-b border-gray-300 py-3">
                 <span>تاریخ ایجاد</span>
-                <span></span>
+                <span>
+                  {transaction?.createdAt &&
+                    new Date(transaction?.createdAt).toLocaleString("fa-IR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  {" - "}
+                  {transaction?.createdAt &&
+                    new Date(transaction?.createdAt).toLocaleDateString(
+                      "fa-IR",
+                    )}
+                </span>
               </div>
-            </div>
-
-            <div className="flex-1">
               <div className="flex justify-between items-center border-b border-gray-300 py-3">
                 <span>وضعیت</span>
                 <span>
@@ -126,6 +152,9 @@ export default function TransactionsDetails({
                     transaction?.status}
                 </span>
               </div>
+            </div>
+
+            <div className="flex-1">
               <div className="flex justify-between items-center border-b border-gray-300 py-3">
                 <span>ایجاد کننده</span>
                 <span>
@@ -139,12 +168,34 @@ export default function TransactionsDetails({
               </div>
               <div className="flex justify-between items-center border-b border-gray-300 py-3">
                 <span>تاریخ تایید</span>
-                <span></span>
+                <span>
+                  {transaction?.reviewedAt &&
+                    new Date(transaction?.reviewedAt).toLocaleString("fa-IR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  {" - "}
+                  {transaction?.reviewedAt &&
+                    new Date(transaction?.reviewedAt).toLocaleDateString(
+                      "fa-IR",
+                    )}
+                </span>
               </div>
-
-
             </div>
           </div>
+          <div className=" border-b border-gray-300 py-3 w-full">
+            <span>توضیحات</span>
+            <div>
+              {transaction?.status === "REJECTED"
+                ? description[transaction?.description ?? ""]
+                : transaction?.description || transaction?.status === "APPROVED"
+                  ? transaction?.description
+                  : "-"}
+            </div>
+          </div>
+          {transaction?.receiptBase64 !== null && (
+            <PrimaryImgBox img={img} text="تصویر رسید" icon={ArrowDownToLine} />
+          )}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Undo2 } from "lucide-react";
 type ProfileType = {
   user: {
     id: string;
@@ -199,189 +200,214 @@ export default function Details({ id }: { id: string }) {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <div className="shadow-md p-8 rounded w-180 h-170 overflow-y-scroll">
-        <div className="flex justify-between gap-5">
-          <div className="flex-1">
-            <div className="flex justify-between items-center border-b border-gray-300 py-2 ">
-              <div>ارز</div>
-              <div>
-                {orders?.product?.name}({orders?.product?.enName})
-              </div>
-            </div>
-            <div className="flex justify-between border-b border-gray-300 py-2 ">
-              <div>نرخ</div>
-              <div> {orders?.rate}</div>
-            </div>
-            <div className="flex justify-between border-b border-gray-300 py-2">
-              <div>تعداد درخواستی </div>
-              <div>{orders?.count}</div>
-            </div>
-            <div className="flex justify-between border-b border-gray-300 py-2">
-              <div>درصد بیعانه </div>
-              <div>{orders?.downDeposit ? `${orders?.downDeposit}%` : 0}</div>
-            </div>
-            <div className="flex justify-between border-b border-gray-300 py-2">
-              <div>تعداد تایید شده </div>
-              <div>
-                {orders?.approvedCount != null ? orders?.approvedCount : "-"}
-              </div>
-            </div>
-            <div className="flex justify-between items-center border-b border-gray-300 py-2">
-              <div>مبلغ کل</div>
-              <div>
-                {orders?.totalAmount != null ? orders?.totalAmount : "-"}
-              </div>
-            </div>
-            <div className="flex justify-between items-center border-b border-gray-300 py-2">
-              <div>مبلغ بیعانه</div>
-              <div>
-                {orders?.totalAmount != null && orders.downDeposit != null
-                  ? (orders.totalAmount * orders.downDeposit) / 100
-                  : "-"}
-              </div>
-            </div>
-          </div>
-          <div className="flex-1">
-            <div className="flex justify-between items-center border-b border-gray-300 py-2">
-              <div>مبلغ باقی مانده</div>
-              <div>
-                {orders?.totalAmount != null
-                  ? orders.totalAmount - orders?.approvedAmount
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex justify-between items-center border-b border-gray-300 py-2">
-              <div>مبلغ تایید شده </div>
-              <div>
-                {orders?.approvedAmount != null ? orders?.approvedAmount : "-"}
-              </div>
-            </div>
-            <div className="flex justify-between items-center border-b border-gray-300 py-2">
-              <div>مبلغ در انتظار تایید </div>
-              <div>
-                {orders?.pendingAmount != null ? orders?.pendingAmount : "-"}
-              </div>
-            </div>
-            <div className="flex justify-between items-center border-b border-gray-300 py-2">
-              <div>وضعیت</div>
-              <div> {statusModel[orders?.status ?? ""] ?? orders?.status}</div>
-            </div>
-            <div className="flex justify-between items-center border-b border-gray-300 py-2">
-              <div>ایجاد کننده </div>
-              <div>{orders?.createdByFullName}</div>
-            </div>
-            <div className="flex justify-between items-center border-b border-gray-300 py-2">
-              <div>تاریخ ایجاد</div>
-              <div>
-                {orders?.createdAt &&
-                  new Date(orders.createdAt).toLocaleString("fa-IR", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                {" - "}
-                {orders?.createdAt &&
-                  new Date(orders.createdAt).toLocaleDateString("fa-IR")}
-              </div>
-            </div>
-          </div>
+      <div>
+        <div className="flex justify-between">
+          <span className="font-bold">جزئیات</span>
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-1 cursor-pointer bg-blue-950 text-white rounded px-2 py-1"
+          >
+            <Undo2 size={16} />
+            <span>بازگشت</span>
+          </button>
         </div>
-        <div className=" border-b border-gray-300 py-5  w-full">
-          <div>توضیحات</div>
+        <div className="shadow-md p-8 rounded w-180 h-170 overflow-y-scroll">
+          <div className="flex justify-between gap-5">
+            <div className="flex-1">
+              <div className="flex justify-between items-center border-b border-gray-300 py-2 ">
+                <div>ارز</div>
+                <div>
+                  {orders?.product?.name}({orders?.product?.enName})
+                </div>
+              </div>
+              <div className="flex justify-between border-b border-gray-300 py-2 ">
+                <div>نرخ</div>
+                <div> {orders?.rate}</div>
+              </div>
+              <div className="flex justify-between border-b border-gray-300 py-2">
+                <div>تعداد درخواستی </div>
+                <div>{orders?.count}</div>
+              </div>
+              <div className="flex justify-between border-b border-gray-300 py-2">
+                <div>درصد بیعانه </div>
+                <div>{orders?.downDeposit ? `${orders?.downDeposit}%` : 0}</div>
+              </div>
+              <div className="flex justify-between border-b border-gray-300 py-2">
+                <div>تعداد تایید شده </div>
+                <div>
+                  {orders?.approvedCount != null ? orders?.approvedCount : "-"}
+                </div>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-300 py-2">
+                <div>مبلغ کل</div>
+                <div>
+                  {orders?.totalAmount != null ? orders?.totalAmount : "-"}
+                </div>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-300 py-2">
+                <div>مبلغ بیعانه</div>
+                <div>
+                  {orders?.totalAmount != null && orders.downDeposit != null
+                    ? (orders.totalAmount * orders.downDeposit) / 100
+                    : "-"}
+                </div>
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="flex justify-between items-center border-b border-gray-300 py-2">
+                <div>مبلغ باقی مانده</div>
+                <div>
+                  {orders?.totalAmount != null
+                    ? orders.totalAmount - orders?.approvedAmount
+                    : "-"}
+                </div>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-300 py-2">
+                <div>مبلغ تایید شده </div>
+                <div>
+                  {orders?.approvedAmount != null
+                    ? orders?.approvedAmount
+                    : "-"}
+                </div>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-300 py-2">
+                <div>مبلغ در انتظار تایید </div>
+                <div>
+                  {orders?.pendingAmount != null ? orders?.pendingAmount : "-"}
+                </div>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-300 py-2">
+                <div>وضعیت</div>
+                <div>
+                  {" "}
+                  {statusModel[orders?.status ?? ""] ?? orders?.status}
+                </div>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-300 py-2">
+                <div>ایجاد کننده </div>
+                <div>{orders?.createdByFullName}</div>
+              </div>
+              <div className="flex justify-between items-center border-b border-gray-300 py-2">
+                <div>تاریخ ایجاد</div>
+                <div>
+                  {orders?.createdAt &&
+                    new Date(orders.createdAt).toLocaleString("fa-IR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  {" - "}
+                  {orders?.createdAt &&
+                    new Date(orders.createdAt).toLocaleDateString("fa-IR")}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className=" border-b border-gray-300 py-5  w-full">
+            <div>توضیحات</div>
+            <div>
+              {orders?.status === "REJECTED"
+                ? description
+                    .split("|")
+                    .map((item) => <div key={item}>{rejectReason[item]}</div>)
+                : orders?.status === "CANCELLED"
+                  ? orders?.description 
+                  : "-"}
+            </div>
+          </div>
+          <br />
           <div>
-            {orders?.status === "REJECTED"
-              ? description
-                  .split("|")
-                  .map((item) => <div>{rejectReason[item]}</div>)
-              : "-"}
-          </div>
-        </div>
-        <br />
-        <div>
-          {(orders?.status === "MANUAL_OTP_PENDING" ||
-            orders?.status === "COMPLETED") && (
-            <div className="flex justify-between gap-5">
-              <div className="flex-1">
-                <div className="flex justify-between">
-                  <div>تصویر رسید</div>
+            {(orders?.status === "MANUAL_OTP_PENDING" ||
+              orders?.status === "COMPLETED") && (
+              <div className="flex justify-between gap-5">
+                <div className="flex-1">
+                  <div className="flex justify-between">
+                    <div>تصویر رسید</div>
 
-                  <a
-                    href={firstImage}
-                    download="receipt.jpg"
-                    className="bg-gray-300 rounded px-2 cursor-pointer  "
-                  >
-                    دانلود
-                  </a>
+                    <a
+                      href={firstImage}
+                      download="receipt.jpg"
+                      className="bg-gray-300 rounded px-2 cursor-pointer  "
+                    >
+                      دانلود
+                    </a>
+                  </div>
+
+                  <div className="shadow-md rounded-2xl h-60 p-10">
+                    <img
+                      className="h-full w-full object-contain"
+                      src={firstImage}
+                      alt=""
+                    />
+                  </div>
                 </div>
+                <div className="flex-1">
+                  <div className="flex justify-between">
+                    <div>تصویر معرفی نامه</div>
 
-                <div className="shadow-md rounded-2xl h-60 p-10">
-                  <img
-                    className="h-full w-full object-contain"
-                    src={firstImage}
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between">
-                  <div>تصویر معرفی نامه</div>
+                    <a
+                      href={seconedImage}
+                      download="receipt.jpg"
+                      className="bg-gray-300 rounded px-2 cursor-pointer"
+                    >
+                      دانلود
+                    </a>
+                  </div>
 
-                  <a
-                    href={seconedImage}
-                    download="receipt.jpg"
-                    className="bg-gray-300 rounded px-2 cursor-pointer"
-                  >
-                    دانلود
-                  </a>
-                </div>
-
-                <div className="shadow-md rounded-2xl h-60 p-10">
-                  <img
-                    className="h-full w-full object-contain"
-                    src={seconedImage}
-                    alt=""
-                  />
+                  <div className="shadow-md rounded-2xl h-60 p-10">
+                    <img
+                      className="h-full w-full object-contain"
+                      src={seconedImage}
+                      alt=""
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-
-        <div className="pt-8">
-          <div className="border-b border-gray-300 pb-4 flex justify-between">
-            <div>شیوه نامه</div>
-            <button
-              className="print:hidden  bg-gray-300 rounded px-2 cursor-pointer"
-              onClick={handlePrint}
-            >
-              چاپ
-            </button>
+            )}
           </div>
 
-          <div id="print-area" className="pt-5">
-            <div>بسمه تعالی</div>
-            <br />
-            <div>
-              <div>مدیریت محترم شرکت صرافی ملی ایران</div>
-              <div>موضوع:درخواست خریدارز به صورت اسکناس در سرفصل 26</div>
+          <div className="pt-8">
+            <div className="border-b border-gray-300 pb-4 flex justify-between">
+              <div>شیوه نامه</div>
+              <button
+                className="print:hidden  bg-gray-300 rounded px-2 cursor-pointer"
+                onClick={handlePrint}
+              >
+                چاپ
+              </button>
             </div>
-            <br />
-            <div>
-              با سلام
+
+            <div id="print-area" className="pt-5">
+              <div>بسمه تعالی</div>
               <br />
+              <div>
+                <div>مدیریت محترم شرکت صرافی ملی ایران</div>
+                <div>موضوع:درخواست خریدارز به صورت اسکناس در سرفصل 26</div>
+              </div>
               <br />
-              احتراماً، وفق بخشنامه 76578 مورخ 07/04/1405 بانک مرکزی جمهوری
-              اسلامی ایران و نظر به امکان خرید ارز در سرفصل از/به بانک و صرافی
-              دیگر با کد عملیاتی 26 برای شرکت های صرافی دارای مجوز معتبر فعالیت،
-              شرکت <span className="font-bold">{orders?.exchange?.persianName}</span> به شناسه ملی{" "}
-              <span className="font-bold">{profile?.user?.idNo} </span>درخواست خرید مقدار <span className="font-bold">{orders?.count}</span>{" "}
-              <span className="font-bold">{orders?.product?.name}</span> در نرخ <span className="font-bold">{orders?.rate}</span> ریال را اعلام می
-              دارد. خواهشمند است در صورت امکان و با رعایت ضوابط و مقررات ارزی
-              مربوط، مساعدت لازم در خصوص تامین ارز مورد درخواست و انجام معامله
-              را مبذول فرمایید.
-              <br />
-              <br />
-              بدیهی است انجام معامله و تسویه آن منوط به توافق نهایی طرفین و در
-              چهارچوب مجموعه مقررات ارزی می باشد.
+              <div>
+                با سلام
+                <br />
+                <br />
+                احتراماً، وفق بخشنامه 76578 مورخ 07/04/1405 بانک مرکزی جمهوری
+                اسلامی ایران و نظر به امکان خرید ارز در سرفصل از/به بانک و صرافی
+                دیگر با کد عملیاتی 26 برای شرکت های صرافی دارای مجوز معتبر
+                فعالیت، شرکت{" "}
+                <span className="font-bold">
+                  {orders?.exchange?.persianName}
+                </span>{" "}
+                به شناسه ملی{" "}
+                <span className="font-bold">{profile?.user?.idNo} </span>درخواست
+                خرید مقدار <span className="font-bold">{orders?.count}</span>{" "}
+                <span className="font-bold">{orders?.product?.name}</span> در
+                نرخ <span className="font-bold">{orders?.rate}</span> ریال را
+                اعلام می دارد. خواهشمند است در صورت امکان و با رعایت ضوابط و
+                مقررات ارزی مربوط، مساعدت لازم در خصوص تامین ارز مورد درخواست و
+                انجام معامله را مبذول فرمایید.
+                <br />
+                <br />
+                بدیهی است انجام معامله و تسویه آن منوط به توافق نهایی طرفین و در
+                چهارچوب مجموعه مقررات ارزی می باشد.
+              </div>
             </div>
           </div>
         </div>
