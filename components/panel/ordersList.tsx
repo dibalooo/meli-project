@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { CircleOff } from "lucide-react";
 import { CreditCard } from "lucide-react";
 import { BadgeInfo } from "lucide-react";
+import { FileUp } from "lucide-react";
 type OrderListRequest = {
   fromDate: string | null;
   toDate: string | null;
@@ -134,11 +135,11 @@ export default function OrderList() {
     const cancel = prompt("علت لغو سفارش را وارد کنید");
 
     if (cancel !== null && cancel.trim()) {
-      setCancel(id, cancel);
+      orderCancelHandler(id, cancel);
     }
   };
 
-  async function setCancel(id: string, cancel: string) {
+  async function orderCancelHandler(id: string, cancel: string) {
     const req = fetch("http://37.32.24.124:443/api/v1/customer/orders/cancel", {
       method: "POST",
       headers: {
@@ -151,6 +152,20 @@ export default function OrderList() {
     const bodyRes = await res.json();
     if (res.ok && bodyRes.success) {
       getList();
+    }
+    if (res.status === 401) {
+      router.push("/login");
+      localStorage.removeItem("token");
+      localStorage.removeItem("loginInfo");
+    }
+    if (res.status === 440) {
+      const message = bodyRes?.message;
+      // confirm(message);
+      if (confirm(message) == true) {
+        router.push("/login");
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginInfo");
+      }
     }
   }
   return (
@@ -251,42 +266,36 @@ export default function OrderList() {
                   <div>{persianTime}</div>
                 </td>
                 <td>
-                  <div className="flex flex-col items-center gap-2">
-                    {item?.status === "CANCELLED" ||
-                    item?.status === "REJECTED" ? (
+                  <div className="flex  items-center gap-2">
+                    {item?.status === "PENDING_ADMIN_APPROVAL" && (
+                      <CircleOff
+                        className="cursor-pointer"
+                        size={20}
+                        onClick={() => handleCancel(item.id)}
+                      />
+                    )}
+
+                    {item?.status === "PENDING_DOCUMENT_UPLOAD" && (
+                      <FileUp className="cursor-pointer" size={20} 
+                      onClick={()=> router.push(`/panel/upload-document/${item?.id}`)} />
+                    )}
+                    {item?.status !== "CANCELLED" &&
+                      item?.status !== "REJECTED" && (
+                        <CreditCard
+                          onClick={() =>
+                            router.push(`/panel/transaction/${item.id}`)
+                          }
+                          className="cursor-pointer"
+                          size={20}
+                        />
+                      )}
+
+                    {item?.status && (
                       <BadgeInfo
                         onClick={() => router.push(`/panel/details/${item.id}`)}
-                        size={20}
                         className="cursor-pointer"
+                        size={20}
                       />
-                    ) : (
-                      <>
-                        {item?.status === "PENDING_ADMIN_APPROVAL" ? (
-                          <CircleOff
-                            className="cursor-pointer"
-                            size={20}
-                            onClick={() => handleCancel(item.id)}
-                          />
-                        ) : (
-                          <CreditCard
-                            onClick={() =>
-                              router.push(`/panel/transaction/${item.id}`)
-                            }
-                            className="cursor-pointer"
-                            size={20}
-                          />
-                        )}
-
-                        {item?.status && (
-                          <BadgeInfo
-                            onClick={() =>
-                              router.push(`/panel/details/${item.id}`)
-                            }
-                            className="cursor-pointer"
-                            size={20}
-                          />
-                        )}
-                      </>
                     )}
                   </div>
                 </td>

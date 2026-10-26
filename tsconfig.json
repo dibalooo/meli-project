@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "components/panel/details"  ],
+, "components/panel/details", "components/panel/uploadDucument.tsx"  ],
   "exclude": ["node_modules"]
 }
