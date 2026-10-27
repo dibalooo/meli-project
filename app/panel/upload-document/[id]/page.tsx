@@ -7,4 +7,4 @@ export default async function DetailsPage({ params }: Props) {
 const {id} = await params
 
 return <UploadDucument id={id}/> ;
-}
+} 

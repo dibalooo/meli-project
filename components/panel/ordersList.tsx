@@ -7,6 +7,7 @@ import { CircleOff } from "lucide-react";
 import { CreditCard } from "lucide-react";
 import { BadgeInfo } from "lucide-react";
 import { FileUp } from "lucide-react";
+import {CheckLine} from "lucide-react"
 type OrderListRequest = {
   fromDate: string | null;
   toDate: string | null;
@@ -138,6 +139,42 @@ export default function OrderList() {
       orderCancelHandler(id, cancel);
     }
   };
+  const handleManualOtp = (id:string) =>{
+    const manualOtp = prompt("کد تکمیل سفارش را وارد کنید")
+    if(manualOtp !== null && manualOtp.trim()){
+      manualOtpHandler(id,manualOtp)
+    }
+  }
+
+  async function manualOtpHandler(id: string, manualOtp: string) {
+    const req = fetch("http://37.32.24.124:443/api/v1/customer/orders/complete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", 
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ id, code: manualOtp }),
+    });
+    const res = await req;
+    const bodyRes = await res.json();
+    if (res.ok && bodyRes.success) {
+      getList();
+    }
+    if (res.status === 401) {
+      router.push("/login");
+      localStorage.removeItem("token");
+      localStorage.removeItem("loginInfo");
+    }
+    if (res.status === 440) {
+      const message = bodyRes?.message;
+      // confirm(message);
+      if (confirm(message) == true) {
+        router.push("/login");
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginInfo");
+      }
+    }
+  }
 
   async function orderCancelHandler(id: string, cancel: string) {
     const req = fetch("http://37.32.24.124:443/api/v1/customer/orders/cancel", {
@@ -273,6 +310,11 @@ export default function OrderList() {
                         size={20}
                         onClick={() => handleCancel(item.id)}
                       />
+                    )}
+                    {item?.status === "MANUAL_OTP_PENDING" && (
+                      <CheckLine className="cursor-pointer"
+                      size={20}
+                      onClick={()=>handleManualOtp(item.id)} />
                     )}
 
                     {item?.status === "PENDING_DOCUMENT_UPLOAD" && (
