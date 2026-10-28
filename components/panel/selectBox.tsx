@@ -6,7 +6,7 @@ export default function SelectBox({ lable, options, name, placeholder, onChange 
     return (
         <div>
             <div className="pb-1">{lable}</div>
-            <select value={value} name={name} onChange={onChange} className={`text-gray-400 appearance-none w-60 h-8 outline-none border border-gray bg-gray-50 rounded-lg pr-5 w-full ${className}`}>
+            <select value={value} name={name} onChange={onChange} className={`text-gray-400 appearance-none  h-8 outline-none border border-gray bg-gray-50 rounded-lg pr-5 w-full ${className}`}>
 
                 <option value=""  hidden>{placeholder}</option>
                 {options.map((item, i) => (

@@ -60,6 +60,7 @@ type Info = {
   lastName: string;
   exchange: {
     id: string;
+    name: string;
     persianName: string;
     code: string;
     cellphone: [
@@ -129,7 +130,10 @@ export default function Sidebar() {
     <div className="flex flex-col justify-between bg-[#211e72] h-[calc(100vh-250px)] w-80 rounded-2xl overflow-hidden">
       <div className=" my-10 ">
         <div className="flex justify-around items-center border-b border-white pb-5">
-          <button className="flex items-center gap-5 cursor-pointer ">
+          <button
+            className="flex items-center gap-5 cursor-pointer "
+            onClick={() => router.push("/panel/exchange")}
+          >
             <Store size={26} color="white" />
             <span className="text-white">
               {loginInfo?.exchange?.persianName}
@@ -138,7 +142,7 @@ export default function Sidebar() {
           <ChevronLeft size={20} color="white" />
         </div>
         <Link
-          className={`flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md ${
+          className={`flex items-center gap-3 w-50 h-10 m-10 border border-white rounded-md pr-3 ${
             pathName === "/panel/orders" || pathName === "/panel"
               ? "bg-white"
               : ""
@@ -146,8 +150,9 @@ export default function Sidebar() {
           href="/panel/orders"
         >
           <span>
-            {pathName === "/panel/orders" ||
-              (pathName === "/panel" && <Package size={22} />)}
+            {(pathName === "/panel/orders" || pathName === "/panel") && (
+              <PackageOpen size={22} color="#211e72" />
+            )}
             {pathName !== "/panel/orders" && pathName !== "/panel" && (
               <Package size={22} color="white" />
             )}
@@ -166,21 +171,22 @@ export default function Sidebar() {
         <Link
           className={`flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md pr-2 ${pathName === "/panel/add-order" ? "bg-while" : "bg-[#211e72]"}`}
           href="/panel/add-order"
-          onClick={() => {}}
         >
           <span className="text-white">سفارش جدید</span>
         </Link>
       </div>
-      <div className="border-t border-white flex text-white justify-start items-center gap-5 p-3 cursor-pointer">
+      <button
+        onClick={() => router.push("/panel/profile")}
+        className="border-t border-white flex text-white justify-start items-center gap-5 p-3 cursor-pointer"
+      >
         <UserRoundCheck size={28} color="white" />
         <div>
           <span>
             {profile?.user?.firstName} {profile?.user?.lastName}
           </span>
-          <span></span>
           <div>کاربر سامانه</div>
         </div>
-      </div>
+      </button>
     </div>
   );
 }
