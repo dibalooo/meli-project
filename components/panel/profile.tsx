@@ -99,7 +99,7 @@ export default function Profile() {
           <h3>اطلاعات پروفایل من</h3>
           <span>اطلاعات شخصی و وضعیت حساب کاربری</span>
         </div>
-        <button className="flex items-center justify-between gap-2 bg-blue-950 text-white rounded p-2 cursor-pointer">
+        <button onClick={()=>router.push("reset-password")} className="flex items-center justify-between gap-2 bg-blue-950 text-white rounded p-2 cursor-pointer">
           <KeyRound size={16} />
           <span>تغییر رمز عبور</span>
         </button>
@@ -154,7 +154,16 @@ export default function Profile() {
             <CalendarDays size={26} className="border-l " />
             <div className="pr-3">
               <div>تاریخ عضویت</div>
-              <span>{profileInfo?.user?.createdAt}</span>
+              <span>
+                {profileInfo?.user?.createdAt &&
+                  new Date(profileInfo?.user?.createdAt).toLocaleDateString(
+                    "fa-IR",
+                    {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    },
+                  )}
+              </span>
             </div>
           </div>
         </div>

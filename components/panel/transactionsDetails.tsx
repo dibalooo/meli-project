@@ -141,7 +141,10 @@ export default function TransactionsDetails({
                   {" - "}
                   {transaction?.createdAt &&
                     new Date(transaction?.createdAt).toLocaleDateString(
-                      "fa-IR",
+                      "fa-IR",{
+                        hour: "2-digit",
+                      minute: "2-digit",
+                      }
                     )}
                 </span>
               </div>

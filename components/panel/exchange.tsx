@@ -13,7 +13,7 @@ import {
   MapPinCheckInside,
   UserRoundGroup,
   UserRound,
-  UserRoundStar
+  UserRoundStar,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 type Info = {
@@ -164,7 +164,7 @@ export default function Exchange() {
             <span>سایر اطلاعات</span>
           </div>
           <div className="flex items-center gap-3 py-3">
-            <Hash size={26} className="border-l"/>
+            <Hash size={26} className="border-l" />
             <div>
               <div>شماره مجوز فعالیت</div>
               <span>{loginInfo?.exchange?.code}</span>
@@ -178,14 +178,22 @@ export default function Exchange() {
             </div>
           </div>
           <div className="flex items-center gap-3 py-3">
-            <CalendarDays size={26} className="border-l "/>
+            <CalendarDays size={26} className="border-l " />
             <div>
               <div>تاریخ ثبت صرافی</div>
-              <span>0{profileInfo?.exchange?.createdAt}</span>
+              <span>
+                {profileInfo?.exchange?.createdAt && new Date(profileInfo?.exchange?.createdAt).toLocaleDateString(
+                  "fa-IR",
+                  {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  },
+                )}
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-3 py-3">
-            <MapPinCheckInside size={26} className="border-l"/>
+            <MapPinCheckInside size={26} className="border-l" />
 
             <div>
               <div>ادرس صرافی</div>
@@ -204,9 +212,15 @@ export default function Exchange() {
               <span>
                 {loginInfo?.exchange?.cellphone?.map((item, index) => (
                   <div key={index} className=" py-3">
-                    {index === 0 && <UserRoundStar  size={26} className="border-b py-1"/>}
-                    {index === 1 && <UserRound  size={26} className="border-b py-1" />}
-                    {index === 2 && <UserRound  size={26} className="border-b py-1" />}
+                    {index === 0 && (
+                      <UserRoundStar size={26} className="border-b py-1" />
+                    )}
+                    {index === 1 && (
+                      <UserRound size={26} className="border-b py-1" />
+                    )}
+                    {index === 2 && (
+                      <UserRound size={26} className="border-b py-1" />
+                    )}
 
                     {}
                     <div>

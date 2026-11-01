@@ -9,6 +9,10 @@ import {
   Package,
   PackageOpen,
   UserRoundCheck,
+  PackagePlus,
+  Package2,
+  UsersRound,
+  UsersRoundCollaboration
 } from "lucide-react";
 type ProfileType = {
   user: {
@@ -131,11 +135,15 @@ export default function Sidebar() {
       <div className=" my-10 ">
         <div className="flex justify-around items-center border-b border-white pb-5">
           <button
-            className="flex items-center gap-5 cursor-pointer "
+            className={`flex items-center gap-4 cursor-pointer ${
+              pathName === "/panel/exchange"&&
+              ("bg-white rounded p-2")              
+              
+            }`}
             onClick={() => router.push("/panel/exchange")}
           >
-            <Store size={26} color="white" />
-            <span className="text-white">
+            <Store size={26} color={pathName === "/panel/exchange"?"#211e72": "white" } />    
+            <span className={pathName === "/panel/exchange"?"text-[#211e72]": "text-white rounded p-2"}>
               {loginInfo?.exchange?.persianName}
             </span>
           </button>
@@ -169,17 +177,42 @@ export default function Sidebar() {
           </span>
         </Link>
         <Link
-          className={`flex items-center gap-5 w-50 h-10 m-10 border border-white rounded-md pr-2 ${pathName === "/panel/add-order" ? "bg-while" : "bg-[#211e72]"}`}
+          className={`flex items-center gap-3 w-50 h-10 m-10 border border-white rounded-md pr-3 ${pathName === "/panel/add-order" ? "bg-white" : ""}`}
           href="/panel/add-order"
         >
-          <span className="text-white">سفارش جدید</span>
+          <span>
+            {(pathName === "/panel/add-order") && (
+              <Package2 size={22} color="#211e72"/>
+            )}
+            {(pathName !== "/panel/add-order") &&(
+              <PackagePlus size={22} color="white"/>
+            )}
+            
+          </span>
+          
+          <span className={pathName === "/panel/add-order" ?  "text-[#211e72]" : "text-white"}>سفارش جدید</span>
+        </Link>
+        <Link
+          className={`flex items-center gap-3 w-50 h-10 m-10 border border-white rounded-md pr-3 ${pathName === "/panel/exchange-representative" ? "bg-white" : ""}`}
+          href="/panel/exchange-representative"
+        >
+          <span>
+            {(pathName === "/panel/exchange-representative") && (
+
+              <UsersRoundCollaboration size={22} color="#211e72"/>
+            )}
+            {(pathName !== "/panel/exchange-representative") && (
+              <UsersRound size={22} color="white"/>
+            )}
+          </span>
+          <span className={pathName === "/panel/exchange-representative" ?"text-[#211e72]" : "text-white"}>نمایندگان صرافی</span>
         </Link>
       </div>
       <button
         onClick={() => router.push("/panel/profile")}
-        className="border-t border-white flex text-white justify-start items-center gap-5 p-3 cursor-pointer"
+        className={`border-t border-white flex text-white justify-start items-center gap-5 p-3 cursor-pointer`}
       >
-        <UserRoundCheck size={28} color="white" />
+        <UserRoundCheck size={28} color="white"/>
         <div>
           <span>
             {profile?.user?.firstName} {profile?.user?.lastName}

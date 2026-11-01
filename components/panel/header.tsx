@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { DoorOpen, LogOut } from "lucide-react";
 export default function Header() {
   const router = useRouter();
   const [show, setShow] = useState(false);
@@ -35,48 +36,40 @@ export default function Header() {
               کنید.
             </div>
           </div>
-          <button
+          <div
             className="text-[#211e72] mb-10 w-15 self-end ml-10"
             onClick={() => setShow(true)}
           >
-            <div className="flex items-center bg-white p-1 rounded-lg">
-              <span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20px"
-                  height="20px"
-                  viewBox="0 0 21 21"
-                >
-                  <g
-                    fill="none"
-                    fillRule="evenodd"
-                    stroke="#211e72"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    transform="translate(4 3)"
-                  >
-                    <path d="m10.595 10.5 2.905-3-2.905-3" />
-
-                    <path d="m13.5 7.5h-9" />
-
-                    <path d="m10.5.5-8 .00224609c-1.1043501.00087167-1.9994384.89621131-2 2.00056153v9.99438478c0 1.1045695.8954305 2 2 2h8.0954792" />
-                  </g>
-                </svg>
-              </span>
-              <span>خروج</span>
-            </div>
-          </button>
+            <button className="flex items-center bg-[#211e72] text-white py-1 px-2 rounded gap-2 cursor-pointer">
+              <LogOut size={18} />
+              <span className="text-white">خروج</span>
+            </button>
+          </div>
         </div>
       </div>
       {show && (
         <div className="text-center flex items-center justify-center fixed inset-0 bg-black/50">
-          <div className="bg-white rounded w-85 h-45">
-            <div>خروج از حساب کاربری</div>
+          <div className="bg-white rounded-xl w-100 h-80 flex items-center justify-center flex-col">
+            <div className="border border-blue-950 rounded-2xl p-30 ">
+              <div className="font-bold p-2">خروج از حساب کاربری</div>
             <span>ایا اطمینان دارید؟</span>
-            <div className="flex gap-3 justify-center mt-20">
-              <span onClick={logout}>خروج</span>
-              <span onClick={() => setShow(false)}>انصراف</span>
+            <div className="flex gap-3 justify-center ">
+              <button
+                className="cursor-pointer flex items-center bg-blue-950 rounded text-white gap-2 px-2 py-1"
+                onClick={logout}
+              >
+                <DoorOpen size={16} color="white" />
+                <span>خروج</span>
+              </button>
+              <button
+                className="cursor-pointer bg-gray-300 rounded text-gray-500 gap-2 px-2 py-1"
+                onClick={() => setShow(false)}
+              >
+                انصراف
+              </button>
             </div>
+            </div>
+            
           </div>
         </div>
       )}
