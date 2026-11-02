@@ -248,7 +248,7 @@ export default function OrderList() {
 
             return (
               <tr
-                className="border border-white *:border-white  *:border-l *:text-center"
+                className="even:bg-gray-50 *:border-white *:text-center"
                 key={index}
               >
                 <td className="px-6 py-4  ">{index + 1}</td>
@@ -256,7 +256,7 @@ export default function OrderList() {
                   {item.product.name}({item.product.symbol})
                 </td>
                 <td className="px-6 py-4 ">{item.rate}</td>
-                <td className="border-l border-gray-20">
+                <td>
                   <div className="flex flex-col px-1 py-4">
                     <div className="flex justify-around items-center border-b border-gray-30">
                       <span>درخواستی</span>

@@ -13,6 +13,7 @@ export default function AddRepresentative() {
   const [cellphone, setCellphone] = useState("");
   const [idNo, setIdNo] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
   function handleChange(
     event: React.ChangeEvent<HTMLInputElement>,
     key:
@@ -24,26 +25,39 @@ export default function AddRepresentative() {
       | "idNo"
       | "confirmPassword",
   ) {
-    if (key === "firstName") {
-      setFirstName(event.target.value);
+    const value = event.target.value;
+    if (!value.trim()) {
+      setErrors((prev) => ({
+        ...prev,
+        [key]: "",
+      }));
+      return;
     }
+    if (key === "firstName") {
+      setFirstName(value);
+    }
+    const result = addRepresentativeSchema.shape[key].safeParse(value);
+    setErrors((prev) => ({
+      ...prev,
+      [key]: result.success ? "" : result.error.issues[0].message,
+    }));
     if (key === "lastName") {
-      setLastName(event.target.value);
+      setLastName(value);
     }
     if (key === "username") {
-      setUsername(event.target.value);
+      setUsername(value);
     }
     if (key === "password") {
-      setPassword(event.target.value);
+      setPassword(value);
     }
     if (key === "cellphone") {
-      setCellphone(event.target.value);
+      setCellphone(value);
     }
     if (key === "idNo") {
-      setIdNo(event.target.value);
+      setIdNo(value);
     }
     if (key === "confirmPassword") {
-      setConfirmPassword(event.target.value);
+      setConfirmPassword(value);
     }
   }
   function handleSubmit() {
@@ -75,7 +89,7 @@ export default function AddRepresentative() {
           lastName,
           username,
           password,
-          cellphone : Number(cellphone),
+          cellphone: Number(cellphone),
           idNo,
         }),
       },
@@ -104,52 +118,102 @@ export default function AddRepresentative() {
   return (
     <div className="flex justify-center items-center w-full">
       <div className="shadow-md rounded-xl p-8">
-        <div className="flex gap-5">
-          <PrimeryInput
-            value={firstName}
-            onChange={(e) => handleChange(e, "firstName")}
-            type="text"
-            lable="نام"
-          />
-          <PrimeryInput
-            value={lastName}
-            onChange={(e) => handleChange(e, "lastName")}
-            type="text"
-            lable="نام خانوادگی"
-          />
-          <PrimeryInput
-            value={username}
-            onChange={(e) => handleChange(e, "username")}
-            type="text"
-            lable="نام کاربری"
-          />
+        <div className="flex gap-5 pb-3">
+          <div>
+            <PrimeryInput
+              value={firstName}
+              onChange={(e) => handleChange(e, "firstName")}
+              type="text"
+              lable="نام"
+              className={`w-full border ${errors.firstName && "border-red-500"}`}
+            />
+            {errors && (
+              <p className="text-red-500 text-sm pt-2">{errors.firstName}</p>
+            )}
+          </div>
+          <div>
+            <PrimeryInput
+              value={lastName}
+              onChange={(e) => handleChange(e, "lastName")}
+              type="text"
+              lable="نام خانوادگی"
+              className={`w-full border ${errors.lastName && "border-red-500"}`}
+
+            />
+            {errors && (
+              <p className="text-red-500 text-sm pt-2">{errors.lastName}</p>
+            )}
+          </div>
+          <div>
+            <PrimeryInput
+              value={username}
+              onChange={(e) => handleChange(e, "username")}
+              type="text"
+              lable="نام کاربری"
+              className={`w-full border ${errors.username && "border-red-500"}`}
+
+            />
+            {errors && (
+              <p className="text-red-500 text-sm pt-2">{errors.username}</p>
+            )}
+          </div>
         </div>
-        <div className="flex gap-5">
+        <div className="flex gap-5 pb-3">
+          <div>
+            <PrimeryInput
+              value={cellphone}
+              onChange={(e) => handleChange(e, "cellphone")}
+              type="text"
+              lable="شماره همراه"
+              className={`w-full border ${errors.cellphone && "border-red-500"}`}
+
+            />
+            {errors && (
+              <p className="text-red-500 text-sm pt-2">{errors.cellphone}</p>
+            )}
+          </div>
+          <div>
+            <PrimeryInput
+              value={idNo}
+              onChange={(e) => handleChange(e, "idNo")}
+              type="text"
+              lable="کد ملی"
+              className={`w-full border ${errors.idNo && "border-red-500"}`}
+
+            />
+            {errors && (
+              <p className="text-red-500 text-sm pt-2">{errors.idNo}</p>
+            )}
+          </div>
+          <div>
+            <PrimeryInput
+              value={password}
+              onChange={(e) => handleChange(e, "password")}
+              type="password"
+              lable="رمز عبور"
+              className={`w-full border ${errors.password && "border-red-500"}`}
+
+            />
+            {errors && (
+              <p className="text-red-500 text-sm pt-2">{errors.password}</p>
+            )}
+          </div>
+        </div>
+        <div className="">
           <PrimeryInput
-            value={cellphone}
-            onChange={(e) => handleChange(e, "cellphone")}
-            type="text"
-            lable="شماره همراه"
-          />
-          <PrimeryInput
-            value={idNo}
-            onChange={(e) => handleChange(e, "idNo")}
-            type="text"
-            lable="کد ملی"
-          />
-          <PrimeryInput
-            value={password}
-            onChange={(e) => handleChange(e, "password")}
+            value={confirmPassword}
+            onChange={(e) => handleChange(e, "confirmPassword")}
             type="password"
-            lable="رمز عبور"
+            lable="تکرار رمز عبور"
+              className={`w-full border ${errors.confirmPassword && "border-red-500"}`}
+
           />
+          {errors && (
+            <p className="text-red-500 text-sm pt-2">
+              {errors.confirmPassword}
+            </p>
+          )}
         </div>
-        <PrimeryInput
-          value={confirmPassword}
-          onChange={(e) => handleChange(e, "confirmPassword")}
-          type="password"
-          lable="تکرار رمز عبور"
-        />
 
         <div className="flex justify-end gap-3">
           <button

@@ -11,18 +11,32 @@ export default function ResetPassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [errors , setErrors] = useState<Record<string , string>>({})
   function handleChange(
     event: React.ChangeEvent<HTMLInputElement>,
     key: "currentPassword" | "newPassword" | "confirmNewPassword",
   ) {
+    const value = event.target.value
+     const result = resetPasswordSchema.shape[key].safeParse(value);
+     if (!value.trim()) {
+      setErrors((prev) => ({
+        ...prev,
+        [key]: "",
+      }));
+      return;
+    }
+        setErrors((prev) => ({
+          ...prev,
+          [key]: result.success ? "" : result.error.issues[0].message,
+        }));
     if (key === "currentPassword") {
-      setCurrentPassword(event.target.value);
+      setCurrentPassword(value);
     }
     if (key === "newPassword") {
-      setNewPassword(event.target.value);
+      setNewPassword(value);
     }
     if (key === "confirmNewPassword") {
-      setConfirmNewPassword(event.target.value);
+      setConfirmNewPassword(value);
     }
   }
   const isValid =
@@ -75,27 +89,45 @@ export default function ResetPassword() {
           <span className="font-bold">تغییر رمز عبور</span>
         </div>
         <div>
-          <PrimeryInput
+          <div className="py-2">
+           <PrimeryInput
             value={currentPassword}
             lable="رمزعبور فعلی"
             onChange={(e) => handleChange(e, "currentPassword")}
             type="password"
-            className="w-100"
+            className={`w-full border ${errors.currentPassword && "border-red-500"}`} 
           />
-          <PrimeryInput
+          {errors && (
+            <p className="text-red-500 text-sm pt-2">{errors.currentPassword}</p>
+          )} 
+          </div>
+          <div className="py-2">
+            <PrimeryInput
             value={newPassword}
             lable="رمزعبور جدید"
             onChange={(e) => handleChange(e, "newPassword")}
             type="password"
-            className="w-100"
+            className={`w-full border ${errors.newPassword && "border-red-500"}`}
           />
-          <PrimeryInput
+          {errors && (
+            <p className="text-red-500 text-sm pt-2">{errors.newPassword}</p>
+          )}
+          </div>
+          <div className="py-2">
+            <PrimeryInput
             value={confirmNewPassword}
             lable="تکرار رمز عبور جدید"
             onChange={(e) => handleChange(e, "confirmNewPassword")}
             type="password"
-            className="w-100"
+            className={`w-full border ${errors.confirmNewPassword && "border-red-500" }`}
+              
+            
           />
+          {errors && (
+            <p className="text-red-500 text-sm pt-2">{errors.confirmNewPassword}</p>
+          )}
+          </div>
+          
         </div>
         <div className="flex justify-end items-center gap-3 py-4">
           <button

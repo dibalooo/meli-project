@@ -91,8 +91,8 @@ export default function ExchangeRepresentative() {
   }, []);
   return (
     <div className="w-full flex justify-center">
-      <div>
-        <div className="flex items-center justify-between mb-10">
+      <div className="w-full">
+        <div className="flex items-center justify-between mb-10 w-full">
           <div>
             <div>نمایندگان صرافی</div>
             <div>نمایندگان ثبت شده در صرافی را مشاهده میکنید</div>

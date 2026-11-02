@@ -30,7 +30,7 @@ export default function AddOrder() {
     setRate,
     step,
     setStep,
-    isChecked,
+    isChecked,  
     setIsChecked,
     resetForm,
   } = useAddOrderStore((state) => state);
