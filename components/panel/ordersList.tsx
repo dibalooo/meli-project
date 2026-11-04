@@ -64,6 +64,7 @@ export default function OrderList() {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const router = useRouter();
+  const [isLoading , setIsLoading] = useState(false)
 
   const statusModel: Record<string, string> = {
     PENDING_ADMIN_APPROVAL: "در انتظار تایید مدیر",
@@ -82,6 +83,7 @@ export default function OrderList() {
   };
 
   async function getList() {
+    setIsLoading(true)
     const token = localStorage.getItem("token");
 
     const httpRequest = fetch(
@@ -125,7 +127,10 @@ export default function OrderList() {
         localStorage.removeItem("token");
         localStorage.removeItem("loginInfo");
       }
+      
     }
+    setIsLoading(false)
+    
   }
 
   useEffect(() => {
@@ -216,10 +221,11 @@ export default function OrderList() {
         setToDate={setToDate}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
+        isLoading = {isLoading}
       />
 
       <table className="w-full">
-        <thead className="bg-gray-100 shadow shadow-gray-300 rounded-xl *:text-center">
+        <thead className="bg-gray-100 rounded-xl *:text-center">
           <tr>
             <th className="px-6 py-4">ردیف</th>
             <th className="px-6 py-4 ">ارز</th>

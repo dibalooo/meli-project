@@ -19,4 +19,4 @@ export default function SelectBox({ lable, options, name, placeholder, onChange 
 
         </div>
     )
-}
+} 

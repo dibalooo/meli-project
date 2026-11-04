@@ -178,7 +178,7 @@ export default function SendOtp({
           )}
 
         <button
-        disabled={isLoading}
+        disabled={isLoading || !isFormValid}
           className={`rounded w-full p-2 bg-[#211e72] text-white my-8 ${!isFormValid||isLoading
       ? "bg-gray-300 cursor-not-allowed"
       : "bg-[#211e72] cursor-pointer"}`}

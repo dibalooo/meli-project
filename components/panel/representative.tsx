@@ -2,6 +2,7 @@
 import { UserRoundPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import PrimaryBtn from "../primary-btn";
 type ListType = {
   items: [
     {
@@ -97,10 +98,7 @@ export default function ExchangeRepresentative() {
             <div>نمایندگان صرافی</div>
             <div>نمایندگان ثبت شده در صرافی را مشاهده میکنید</div>
           </div>
-          <button onClick={()=>router.push("/panel/add-representative")} className="flex items-center gap-1 cursor-pointer bg-blue-950 text-white rounded px-2 py-1">
-            <UserRoundPlus size={16} />
-            <div>افزودن نماینده</div>
-          </button>
+          <PrimaryBtn label="افزودن نماینده" icon={UserRoundPlus} onClick={()=>router.push("/panel/add-representative")}classname="flex items-center gap-1 cursor-pointer bg-blue-950 text-white rounded px-2 py-1"/>
         </div>
         <table className="w-full mt-5 shadow shadow-gray-300 rounded-xl overflow-hidden *:text-center">
           <thead>

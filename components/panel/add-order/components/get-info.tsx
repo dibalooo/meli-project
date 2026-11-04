@@ -4,7 +4,6 @@ import { useAddOrderStore } from "@/store/addOrderStore";
 import { useState, useEffect } from "react";
 import SelectBox, { type Option } from "../../selectBox";
 import { useRouter } from "next/navigation";
-
 export default function GetInfo() {
   const {
     productId,

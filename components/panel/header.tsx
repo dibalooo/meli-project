@@ -1,11 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { DoorOpen, LogOut } from "lucide-react";
+import PrimaryBtn from "../primary-btn";
+
 export default function Header() {
   const router = useRouter();
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   async function logout() {
+    setIsLoading(true);
     const req = fetch("http://37.32.24.124:443/api/v1/customer/auth/logout", {
       method: "POST",
       headers: {
@@ -20,6 +24,7 @@ export default function Header() {
       localStorage.removeItem("token");
       router.push("/login");
     }
+    setIsLoading(false);
   }
   return (
     <div>
@@ -36,14 +41,8 @@ export default function Header() {
               کنید.
             </div>
           </div>
-          <div
-            className="text-[#211e72] mb-10 w-15 self-end ml-10"
-            onClick={() => setShow(true)}
-          >
-            <button className="flex items-center bg-[#211e72] text-white py-1 px-2 rounded gap-2 cursor-pointer">
-              <LogOut size={18} />
-              <span className="text-white">خروج</span>
-            </button>
+          <div className="text-[#211e72] mb-10 w-15 self-end ml-10">
+            <PrimaryBtn icon={LogOut} label="خروج"  onClick={() => setShow(true)} classname={`flex items-center py-1 px-2 rounded gap-2 opacity-100 cursor-pointer bg-blue-950 text-white`}/>
           </div>
         </div>
       </div>
@@ -52,24 +51,21 @@ export default function Header() {
           <div className="bg-white rounded-xl w-100 h-80 flex items-center justify-center flex-col">
             <div className="border border-blue-950 rounded-2xl p-30 ">
               <div className="font-bold p-2">خروج از حساب کاربری</div>
-            <span>ایا اطمینان دارید؟</span>
-            <div className="flex gap-3 justify-center ">
-              <button
-                className="cursor-pointer flex items-center bg-blue-950 rounded text-white gap-2 px-2 py-1"
-                onClick={logout}
-              >
-                <DoorOpen size={16} color="white" />
-                <span>خروج</span>
-              </button>
-              <button
-                className="cursor-pointer bg-gray-300 rounded text-gray-500 gap-2 px-2 py-1"
-                onClick={() => setShow(false)}
-              >
-                انصراف
-              </button>
+              <span>ایا اطمینان دارید؟</span>
+              <div className="flex gap-3 justify-center ">
+                <PrimaryBtn disabled={isLoading} icon={DoorOpen} label="خروج" onClick={logout} classname={` flex items-center  rounded  gap-2 px-2 py-1 ${
+                    isLoading
+                      ? "opacity-50 cursor-not-allowed bg-gray-400 text-black"
+                      : "opacity-100 cursor-pointer bg-blue-950 text-white"
+                  }`}/>
+                
+                <PrimaryBtn disabled={isLoading} onClick={() => setShow(false)} label="انصراف" classname={`rounded gap-2 px-2 py-1 ${
+                    isLoading
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer bg-gray-300 text-gray-500"
+                  }`}/>
+              </div>
             </div>
-            </div>
-            
           </div>
         </div>
       )}
